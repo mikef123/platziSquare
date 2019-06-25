@@ -18,6 +18,10 @@ import { Observable } from 'rxjs';
 import { AngularFireModule } from '@angular/fire';
 import { CrearComponent } from './crear/crear.component';
 import { FormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { linkifystrPipe } from './pipes/linkystr.pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 export const environment = {
   production: false,
@@ -36,7 +40,7 @@ const appRoutes: Routes = [
   {path:'lugares', component: LugaresComponent},
   {path:'detalle/:id', component: DetalleComponent},
   {path:'contacto', component: ContactoComponent},
-  {path:'crear', component: CrearComponent}
+  {path:'crear/:id', component: CrearComponent}
 ]
 @NgModule({
   declarations: [
@@ -46,10 +50,13 @@ const appRoutes: Routes = [
     DetalleComponent,
     LugaresComponent,
     ContactoComponent,
-    CrearComponent
+    CrearComponent,
+    linkifystrPipe
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     AngularFireModule.initializeApp(environment.firebase, 'PlatziSquare'),
