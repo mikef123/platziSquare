@@ -17,10 +17,14 @@ import { AngularFireAuthModule} from '@angular/fire/auth'
 import { Observable } from 'rxjs';
 import { AngularFireModule } from '@angular/fire';
 import { CrearComponent } from './crear/crear.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { linkifystrPipe } from './pipes/linkystr.pipe';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoginComponent } from './login/login.component';
+import { RegistroComponent } from './registro/registro.component';
+import { AutorizacionService } from './services/autorizacion.service';
+import { MyGuard } from './services/my-guard.service';
 
 
 export const environment = {
@@ -40,7 +44,10 @@ const appRoutes: Routes = [
   {path:'lugares', component: LugaresComponent},
   {path:'detalle/:id', component: DetalleComponent},
   {path:'contacto', component: ContactoComponent},
-  {path:'crear/:id', component: CrearComponent}
+  {path:'crear/:id', component: CrearComponent, canActivate:[MyGuard]},
+  {path:'login', component: LoginComponent},
+  {path:'registro', component: RegistroComponent},
+
 ]
 @NgModule({
   declarations: [
@@ -51,7 +58,9 @@ const appRoutes: Routes = [
     LugaresComponent,
     ContactoComponent,
     CrearComponent,
-    linkifystrPipe
+    linkifystrPipe,
+    LoginComponent,
+    RegistroComponent
   ],
   imports: [
     HttpClientModule,
@@ -62,13 +71,13 @@ const appRoutes: Routes = [
     AngularFireModule.initializeApp(environment.firebase, 'PlatziSquare'),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    AngularFirestoreModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAokeFPjsGUD9OElN1-By5fDCZsXBo3Mt8'
     }),
   ],
-  providers: [LugaresService],
+  providers: [LugaresService, AutorizacionService, MyGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
